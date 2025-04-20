@@ -1,0 +1,14 @@
+@use "styles/variables" as *;
+
+:host {
+  footer {
+    // height: 54px;
+    padding: 12px 24px;
+    background-color: $primary-color;
+
+    p {
+      font-size: 14px;
+      color: #f1f3f5;
+    }
+  }
+}
