@@ -1,7 +1,7 @@
 :host {
   .results-grid {
-    background-color: orange;
     display: grid;
+    justify-items: center;
     grid-template-columns: repeat(4, 1fr);
     row-gap: 24px;
   }
