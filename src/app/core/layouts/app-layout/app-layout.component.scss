@@ -1,0 +1,19 @@
+:host {
+  .app {
+    width: 100%;
+    min-height: 100%;
+  }
+
+  .main {
+    overflow: auto;
+  }
+
+  .container {
+    width: 1420px;
+    margin: 0 auto;
+    margin-top: 92px;
+    padding: 48px 0;
+    background-color: #f1f3f5;
+    border-radius: 16px;
+  }
+}
