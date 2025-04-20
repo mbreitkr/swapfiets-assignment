@@ -1,7 +1,11 @@
 :host {
   .details-page {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+    position: relative;
+
+    .back-btn-container {
+      position: absolute;
+      top: -72px;
+      left: 0;
+    }
   }
 }
