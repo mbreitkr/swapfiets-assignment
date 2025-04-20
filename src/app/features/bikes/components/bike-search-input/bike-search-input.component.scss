@@ -1,0 +1,35 @@
+@use "styles/variables" as *;
+
+:host {
+  .search-input {
+    display: flex;
+    align-items: center;
+    width: 500px;
+    gap: 16px;
+
+    input {
+      flex: 1 1 auto;
+      border-radius: 32px;
+      padding-left: 16px;
+      font-size: 16px;
+      border: 2px solid #adb5bd;
+      height: 40px;
+    }
+
+    button {
+      height: 32px;
+      width: 32px;
+      background: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      border: 2px solid $primary-color;
+
+      svg {
+        height: 24px;
+        fill: $primary-color;
+      }
+    }
+  }
+}
