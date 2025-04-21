@@ -3,8 +3,9 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { map, Observable } from "rxjs";
 
 import {
-  BIKE_INDEX_V3_API_BASE_URL,
+  BIKE_INDEX_V3_API_BASE_URL as BASE_URL,
   BIKE_SEARCH_RADIUS_MILES,
+  BIKE_SEARCH_RESULTS_PER_PAGE,
 } from "../../../core/constants/api.config";
 import { BikeDetails, BikeSummary } from "../interfaces/bike.model";
 import {
@@ -17,17 +18,16 @@ import {
 })
 export class BikesApiService {
   private http = inject(HttpClient);
-  private baseUrl = BIKE_INDEX_V3_API_BASE_URL;
-  private bikeSearchRadiusMiles = BIKE_SEARCH_RADIUS_MILES;
 
   getBikesByCity(city: string): Observable<BikeSummary[]> {
     const searchParams = new HttpParams()
       .set("location", city)
-      .set("distance", this.bikeSearchRadiusMiles)
-      .set("stolenness", "proximity");
+      .set("stolenness", "proximity")
+      .set("distance", BIKE_SEARCH_RADIUS_MILES)
+      .set("per_page", BIKE_SEARCH_RESULTS_PER_PAGE);
 
     return this.http
-      .get<BikeSearchResponse>(`${this.baseUrl}/search`, {
+      .get<BikeSearchResponse>(`${BASE_URL}/search`, {
         params: searchParams,
       })
       .pipe(map((resp) => resp.bikes));
@@ -35,7 +35,7 @@ export class BikesApiService {
 
   getBikeById(id: number): Observable<BikeDetails> {
     return this.http
-      .get<BikeDetailsResponse>(`${this.baseUrl}/bikes/${id}`)
+      .get<BikeDetailsResponse>(`${BASE_URL}/bikes/${id}`)
       .pipe(map((resp) => resp.bike));
   }
 }
