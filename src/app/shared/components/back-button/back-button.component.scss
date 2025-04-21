@@ -1,26 +1,30 @@
 @use "styles/variables" as *;
 
 :host {
-  .btn-back {
-    background: none;
-    height: 48px;
-    padding: 0 16px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 8px;
-    border-radius: 48px;
-    border: 2px solid $primary-color;
+  a {
+    text-decoration: none;
 
-    .btn-text {
-      color: $primary-color;
-      font-size: 18px;
-    }
+    .btn-back {
+      background: none;
+      height: 48px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 8px;
+      border-radius: 48px;
+      border: 2px solid $primary-color;
 
-    .btn-icon {
-      fill: $primary-color;
-      height: 24px;
-      width: 24px;
+      .btn-text {
+        color: $primary-color;
+        font-size: 18px;
+      }
+
+      .btn-icon {
+        fill: $primary-color;
+        height: 24px;
+        width: 24px;
+      }
     }
   }
 }
