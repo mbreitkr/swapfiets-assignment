@@ -1,7 +1,13 @@
-<form class="search-input" role="search">
+<form
+  class="search-input"
+  role="search"
+  [formGroup]="searchForm"
+  (ngSubmit)="onSubmit()"
+>
   <input
+    formControlName="city"
     placeholder="City search"
-    type="search"
+    type="text"
     aria-label="Search for bikes by city name"
   />
   <button>
