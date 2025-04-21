@@ -1,10 +1,55 @@
-import { NgOptimizedImage } from "@angular/common";
-import { Component } from "@angular/core";
+import { CommonModule, NgOptimizedImage } from "@angular/common";
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+
+import { BikesApiService } from "../../services/bikes-api.service";
+import { BikeDetails } from "../../interfaces/bike.model";
 
 @Component({
   selector: "app-bike-details",
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, CommonModule],
   templateUrl: "./bike-details.component.html",
   styleUrl: "./bike-details.component.scss",
 })
-export class BikeDetailsComponent {}
+export class BikeDetailsComponent implements OnInit {
+  bikeDetails: WritableSignal<BikeDetails | null> = signal(null);
+  isLoading = signal(false);
+  isError = signal(false);
+
+  private bikeApi = inject(BikesApiService);
+  private route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    this.isError.set(false);
+    this.isLoading.set(true);
+
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get("id");
+
+      if (!id) {
+        this.isError.set(true);
+        this.isLoading.set(false);
+        return;
+      }
+
+      this.bikeApi.getBikeById(Number(id)).subscribe({
+        next: (bike) => {
+          console.log(bike);
+          this.bikeDetails.set(bike);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          this.isError.set(true);
+          console.error(err);
+          this.isLoading.set(false);
+        },
+      });
+    });
+  }
+}

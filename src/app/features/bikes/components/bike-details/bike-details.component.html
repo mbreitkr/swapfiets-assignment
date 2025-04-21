@@ -1,66 +1,80 @@
-<div class="details">
-  <img
-    ngSrc="https://files.bikeindex.org/uploads/Pu/426477/Screen_Shot_2021-04-28_at_1.46.22_PM.png"
-    alt="2019 NCM eBikes Moscow Plus Electric Mountain Bike"
-    width="779"
-    height="634"
-    priority
-  />
-  <section class="details-summary">
-    <h1>2019 NCM eBikes Moscow Plus Electric Mountain Bike</h1>
-    <ul class="details-summary-list">
-      <li>
-        <p class="detail-label">Location</p>
-        <p class="detail-value">Denver, CO 80209, US</p>
-      </li>
-      <li>
-        <p class="detail-label">Manufacturer</p>
-        <p class="detail-value">Trek</p>
-      </li>
-      <li>
-        <p class="detail-label">Model</p>
-        <p class="detail-value">Domane sl7</p>
-      </li>
-      <li>
-        <p class="detail-label">Status</p>
-        <p class="detail-value">Stolen</p>
-      </li>
-    </ul>
-  </section>
-  <section class="details-extended">
-    <section class="details-extended-section">
-      <h2>Description</h2>
-      <p>29" Moscow Plus Electric Mountain Bike 768 Wh 48V/16AH</p>
-    </section>
-    <section class="details-extended-section">
-      <h2>Basics</h2>
-      <div class="detail-items-grid">
-        <div class="detail-item">
+@if (isLoading()) {
+  <h2>Bike details are loading...</h2>
+}
+@if (isError()) {
+  <h2>
+    Error encountered when loading results. Check the console for more details
+  </h2>
+}
+@if (bikeDetails()) {
+  <div class="details">
+    <img
+      ngSrc="{{ bikeDetails()?.large_img }}"
+      alt="{{ bikeDetails()?.title }}"
+      width="779"
+      height="634"
+      priority
+    />
+    <section class="details-summary">
+      <h1>{{ bikeDetails()?.title }}</h1>
+      <ul class="details-summary-list">
+        <li>
+          <p class="detail-label">Location</p>
+          <p class="detail-value">
+            {{ bikeDetails()?.stolen_location ?? "Unknown" }}
+          </p>
+        </li>
+        <li>
           <p class="detail-label">Manufacturer</p>
-          <p class="detail-value">Trek</p>
-        </div>
-        <div class="detail-item">
+          <p class="detail-value">{{ bikeDetails()?.manufacturer_name }}</p>
+        </li>
+        <li>
           <p class="detail-label">Model</p>
-          <p class="detail-value">Domane sl7</p>
-        </div>
-        <div class="detail-item">
-          <p class="detail-label">Serial Number</p>
-          <p class="detail-value">FMI9K90870</p>
-        </div>
-      </div>
+          <p class="detail-value">{{ bikeDetails()?.frame_model }}</p>
+        </li>
+        <li>
+          <p class="detail-label">Status</p>
+          <p class="detail-value">{{ bikeDetails()?.status | titlecase }}</p>
+        </li>
+      </ul>
     </section>
-    <section class="details-extended-section">
-      <h2>Location Details</h2>
-      <div class="detail-items-grid">
-        <div class="detail-item">
-          <p class="detail-label">Location Stolen</p>
-          <p>CA</p>
+    <section class="details-extended">
+      <section class="details-extended-section">
+        <h2>Description</h2>
+        <p>{{ bikeDetails()?.description }}</p>
+      </section>
+      <section class="details-extended-section">
+        <h2>Basics</h2>
+        <div class="detail-items-grid">
+          <div class="detail-item">
+            <p class="detail-label">Manufacturer</p>
+            <p class="detail-value">{{ bikeDetails()?.manufacturer_name }}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-label">Model</p>
+            <p class="detail-value">{{ bikeDetails()?.frame_model }}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-label">Serial Number</p>
+            <p class="detail-value">{{ bikeDetails()?.serial }}</p>
+          </div>
         </div>
-        <div class="detail-item">
-          <p class="detail-label">Location Found</p>
-          <p class="detail-value">N/A</p>
+      </section>
+      <section class="details-extended-section">
+        <h2>Location Details</h2>
+        <div class="detail-items-grid">
+          <div class="detail-item">
+            <p class="detail-label">Location Stolen</p>
+            <p>{{ bikeDetails()?.stolen_location ?? "Unknown" }}</p>
+          </div>
+          <div class="detail-item">
+            <p class="detail-label">Location Found</p>
+            <p class="detail-value">
+              {{ bikeDetails()?.location_found ?? "N/A" }}
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
     </section>
-  </section>
-</div>
+  </div>
+}

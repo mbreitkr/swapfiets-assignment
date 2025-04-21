@@ -1,16 +1,16 @@
 <div>
+  @if (isLoading()) {
+    <h2>Results are loading...</h2>
+  }
+  @if (isError()) {
+    <h2>
+      Error encountered when loading results. Check the console for more details
+    </h2>
+  }
   <div class="results-grid">
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
-    <app-bike-search-result-card />
+    @for (bikeSearchResult of bikeSearchResults(); track bikeSearchResult.id) {
+      <app-bike-search-result-card [bikeSearchResult]="bikeSearchResult" />
+    }
   </div>
   <div class="pagination"></div>
 </div>
