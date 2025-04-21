@@ -7,6 +7,7 @@ import {
   WritableSignal,
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { take } from "rxjs";
 
 import { BikesApiService } from "../../services/bikes-api.service";
 import { BikeDetails } from "../../interfaces/bike.model";
@@ -29,7 +30,7 @@ export class BikeDetailsComponent implements OnInit {
     this.isError.set(false);
     this.isLoading.set(true);
 
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.pipe(take(1)).subscribe((params) => {
       const id = params.get("id");
 
       if (!id) {
