@@ -9,7 +9,7 @@
   </header>
   <app-bike-search-input
     [isLoading]="isSearchResultsLoading()"
-    (searchSubmit)="searchBikes($event)"
+    (searchSubmit)="handleSearchSubmit($event)"
   />
 </section>
 <section class="bike-search-results">
@@ -18,5 +18,9 @@
     [isLoading]="isSearchResultsLoading()"
     [isError]="isSearchResultsError()"
     [isSearchResultsEmpty]="isSearchResultsEmpty()"
+    [totalResults]="searchResultCount()"
+    [currentPageIndex]="currentResultPageIndex()"
+    [pageSize]="searchResultPageSize()"
+    (pageChange)="handlePageChange($event)"
   />
 </section>

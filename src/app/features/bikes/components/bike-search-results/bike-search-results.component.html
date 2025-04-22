@@ -34,6 +34,12 @@
       </div>
       <mat-paginator
         class="pagination"
+        [length]="totalResults()"
+        [pageIndex]="currentPageIndex()"
+        [pageSize]="pageSize()"
+        [disabled]="isLoading()"
+        [showFirstLastButtons]="true"
+        (page)="handlePageEvent($event)"
         aria-label="Select page"
       ></mat-paginator>
     </div>

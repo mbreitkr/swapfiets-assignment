@@ -7,3 +7,9 @@ export interface BikeSearchResponse {
 export interface BikeDetailsResponse {
   bike: BikeDetails;
 }
+
+export interface BikeSearchCountResponse {
+  proximity: number;
+  stolen: number;
+  non: number;
+}

@@ -5,11 +5,11 @@ import { map, Observable } from "rxjs";
 import {
   BIKE_INDEX_V3_API_BASE_URL as BASE_URL,
   BIKE_SEARCH_RADIUS_MILES,
-  BIKE_SEARCH_RESULTS_PER_PAGE,
 } from "../../../core/constants/api.config";
 import { BikeDetails, BikeSummary } from "../interfaces/bike.model";
 import {
   BikeDetailsResponse,
+  BikeSearchCountResponse,
   BikeSearchResponse,
 } from "../interfaces/bike-responses.model";
 
@@ -19,18 +19,36 @@ import {
 export class BikesApiService {
   private http = inject(HttpClient);
 
-  getBikesByCity(city: string): Observable<BikeSummary[]> {
+  getBikesByCity(
+    city: string,
+    pageNumber: number,
+    resultsPerPage: number,
+  ): Observable<BikeSummary[]> {
     const searchParams = new HttpParams()
       .set("location", city)
+      .set("page", pageNumber)
+      .set("per_page", resultsPerPage)
       .set("stolenness", "proximity")
-      .set("distance", BIKE_SEARCH_RADIUS_MILES)
-      .set("per_page", BIKE_SEARCH_RESULTS_PER_PAGE);
+      .set("distance", BIKE_SEARCH_RADIUS_MILES);
 
     return this.http
       .get<BikeSearchResponse>(`${BASE_URL}/search`, {
         params: searchParams,
       })
       .pipe(map((resp) => resp.bikes));
+  }
+
+  getBikesResultCountByCity(city: string): Observable<number> {
+    const searchParams = new HttpParams()
+      .set("location", city)
+      .set("stolenness", "proximity")
+      .set("distance", BIKE_SEARCH_RADIUS_MILES);
+
+    return this.http
+      .get<BikeSearchCountResponse>(`${BASE_URL}/search/count`, {
+        params: searchParams,
+      })
+      .pipe(map((resp) => resp.proximity));
   }
 
   getBikeById(id: number): Observable<BikeDetails> {
