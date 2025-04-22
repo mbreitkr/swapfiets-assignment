@@ -1,30 +1,27 @@
 <figure class="result-card">
   <div class="img-container">
-    <img
-      [src]="bikeSearchResult().thumb ?? 'img/placeholder_300x300@2x.png'"
-      [alt]="bikeSearchResult().title"
-    />
+    <img [src]="bikeImage" [alt]="bikeSearchResult().title" />
   </div>
   <div class="result-box">
     <h2>{{ bikeSearchResult().title }}</h2>
     <ul class="result-details">
       <li>
-        <p class="detail-label">Location</p>
-        <p class="detail-value">
-          {{ bikeSearchResult().stolen_location ?? "Unknown" }}
-        </p>
+        <p class="detail-label">Status</p>
+        <p class="detail-value">{{ bikeSearchResult().status | titlecase }}</p>
+      </li>
+      <li>
+        <p class="detail-label">Serial #</p>
+        <p class="detail-value">{{ serialNumber }}</p>
       </li>
       <li>
         <p class="detail-label">Manufacturer</p>
         <p class="detail-value">{{ bikeSearchResult().manufacturer_name }}</p>
       </li>
       <li>
-        <p class="detail-label">Model</p>
-        <p class="detail-value">{{ bikeSearchResult().frame_model }}</p>
-      </li>
-      <li>
-        <p class="detail-label">Status</p>
-        <p class="detail-value">{{ bikeSearchResult().status | titlecase }}</p>
+        <p class="detail-label">Last Known Location</p>
+        <p class="detail-value">
+          {{ lastKnownLocation }}
+        </p>
       </li>
     </ul>
   </div>

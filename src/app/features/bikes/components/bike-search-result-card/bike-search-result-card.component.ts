@@ -12,4 +12,20 @@ import { RouterLink } from "@angular/router";
 })
 export class BikeSearchResultCardComponent {
   bikeSearchResult = input.required<BikeSummary>();
+
+  get bikeImage(): string {
+    return this.bikeSearchResult().thumb ?? "img/placeholder_300x300@2x.png";
+  }
+
+  get lastKnownLocation(): string {
+    return (
+      this.bikeSearchResult().stolen_location ??
+      this.bikeSearchResult().location_found ??
+      "Unknown"
+    );
+  }
+
+  get serialNumber(): string {
+    return this.bikeSearchResult().serial ?? "Unknown";
+  }
 }
