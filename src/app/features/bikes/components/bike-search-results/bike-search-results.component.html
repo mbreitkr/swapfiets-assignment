@@ -1,16 +1,36 @@
-<div>
+<div class="search-results">
   @if (isLoading()) {
-    <h2>Results are loading...</h2>
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
   }
   @if (isError()) {
-    <h2>
-      Error encountered when loading results. Check the console for more details
-    </h2>
+    <div class="api-error">
+      <h2>
+        Error encountered when loading results. Check the console for more
+        details
+      </h2>
+    </div>
   }
-  <div class="results-grid">
-    @for (bikeSearchResult of bikeSearchResults(); track bikeSearchResult.id) {
-      <app-bike-search-result-card [bikeSearchResult]="bikeSearchResult" />
-    }
-  </div>
-  <div class="pagination"></div>
+  @if (isSearchResultsEmpty()) {
+    <div class="no-results">
+      <h2>No results returned</h2>
+    </div>
+  }
+  @if (
+    !isLoading() &&
+    !isError() &&
+    !isSearchResultsEmpty() &&
+    bikeSearchResults().length > 0
+  ) {
+    <div class="results-grid">
+      @for (
+        bikeSearchResult of bikeSearchResults();
+        track bikeSearchResult.id
+      ) {
+        <app-bike-search-result-card [bikeSearchResult]="bikeSearchResult" />
+      }
+    </div>
+    <div class="pagination"></div>
+  }
 </div>

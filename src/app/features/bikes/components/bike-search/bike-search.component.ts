@@ -22,12 +22,14 @@ export class BikeSearchComponent {
   bikeSearchResults: WritableSignal<BikeSummary[]> = signal([]);
   isSearchResultsLoading = signal(false);
   isSearchResultsError = signal(false);
+  isSearchResultsEmpty = signal(false);
 
   private bikeApi = inject(BikesApiService);
   private destroyRef = inject(DestroyRef);
 
   searchBikes(city: string): void {
     this.isSearchResultsError.set(false);
+    this.isSearchResultsEmpty.set(false);
     this.isSearchResultsLoading.set(true);
     this.bikeSearchResults.set([]);
 
@@ -36,6 +38,7 @@ export class BikeSearchComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (results) => {
+          if (results.length === 0) this.isSearchResultsEmpty.set(true);
           this.bikeSearchResults.set(results);
           this.isSearchResultsLoading.set(false);
         },
