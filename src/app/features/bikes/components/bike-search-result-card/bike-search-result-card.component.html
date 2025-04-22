@@ -25,8 +25,8 @@
       </li>
     </ul>
   </div>
-  <a routerLink="{{`/details/${bikeSearchResult().id}`}}">
-    <button class="btn-more-details">
+  <div class="btn-container">
+    <button class="btn-more-details" (click)="openDetailsPage()">
       <span class="btn-text">More details</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -41,5 +41,5 @@
         ></path>
       </svg>
     </button>
-  </a>
+  </div>
 </figure>

@@ -2,11 +2,10 @@ import { Component, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { BikeSummary } from "../../interfaces/bike.model";
-import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-bike-search-result-card",
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: "./bike-search-result-card.component.html",
   styleUrl: "./bike-search-result-card.component.scss",
 })
@@ -27,5 +26,9 @@ export class BikeSearchResultCardComponent {
 
   get serialNumber(): string {
     return this.bikeSearchResult().serial ?? "Unknown";
+  }
+
+  openDetailsPage(): void {
+    window.open(`/details/${this.bikeSearchResult().id}`);
   }
 }
