@@ -1,81 +1,83 @@
-@if (isLoading()) {
-  <h2>Bike details are loading...</h2>
-}
-@if (isError()) {
-  <h2>
-    Error encountered when loading results. Check the console for more details
-  </h2>
-}
-@if (bikeDetails()) {
-  <div class="details">
-    <div class="img-container">
-      <img
-        src="{{
-          bikeDetails()?.large_img ?? '/img/placeholder_900x675@2x.png'
-        }}"
-        alt="{{ bikeDetails()?.title }}"
-      />
-    </div>
-    <section class="details-summary">
-      <h1>{{ bikeDetails()?.title }}</h1>
-      <ul class="details-summary-list">
-        <li>
-          <p class="detail-label">Location</p>
-          <p class="detail-value">
-            {{ bikeDetails()?.stolen_location ?? "Unknown" }}
-          </p>
-        </li>
-        <li>
-          <p class="detail-label">Manufacturer</p>
-          <p class="detail-value">{{ bikeDetails()?.manufacturer_name }}</p>
-        </li>
-        <li>
-          <p class="detail-label">Model</p>
-          <p class="detail-value">{{ bikeDetails()?.frame_model }}</p>
-        </li>
-        <li>
-          <p class="detail-label">Status</p>
-          <p class="detail-value">{{ bikeDetails()?.status | titlecase }}</p>
-        </li>
-      </ul>
-    </section>
-    <section class="details-extended">
-      <section class="details-extended-section">
-        <h2>Description</h2>
-        <p>{{ bikeDetails()?.description }}</p>
-      </section>
-      <section class="details-extended-section">
-        <h2>Basics</h2>
-        <div class="detail-items-grid">
-          <div class="detail-item">
+<div class="details">
+  @if (isLoading()) {
+    <mat-spinner class="spinner"></mat-spinner>
+  }
+  @if (isError()) {
+    <h2>
+      Error encountered when loading results. Check the console for more details
+    </h2>
+  }
+  @if (bikeDetails()) {
+    <div class="details-content">
+      <div class="img-container">
+        <img
+          src="{{
+            bikeDetails()?.large_img ?? '/img/placeholder_900x675@2x.png'
+          }}"
+          alt="{{ bikeDetails()?.title }}"
+        />
+      </div>
+      <section class="details-summary">
+        <h1>{{ bikeDetails()?.title }}</h1>
+        <ul class="details-summary-list">
+          <li>
+            <p class="detail-label">Location</p>
+            <p class="detail-value">
+              {{ bikeDetails()?.stolen_location ?? "Unknown" }}
+            </p>
+          </li>
+          <li>
             <p class="detail-label">Manufacturer</p>
             <p class="detail-value">{{ bikeDetails()?.manufacturer_name }}</p>
-          </div>
-          <div class="detail-item">
+          </li>
+          <li>
             <p class="detail-label">Model</p>
             <p class="detail-value">{{ bikeDetails()?.frame_model }}</p>
-          </div>
-          <div class="detail-item">
-            <p class="detail-label">Serial Number</p>
-            <p class="detail-value">{{ bikeDetails()?.serial }}</p>
-          </div>
-        </div>
+          </li>
+          <li>
+            <p class="detail-label">Status</p>
+            <p class="detail-value">{{ bikeDetails()?.status | titlecase }}</p>
+          </li>
+        </ul>
       </section>
-      <section class="details-extended-section">
-        <h2>Location Details</h2>
-        <div class="detail-items-grid">
-          <div class="detail-item">
-            <p class="detail-label">Location Stolen</p>
-            <p>{{ bikeDetails()?.stolen_location ?? "Unknown" }}</p>
+      <section class="details-extended">
+        <section class="details-extended-section">
+          <h2>Description</h2>
+          <p>{{ bikeDetails()?.description }}</p>
+        </section>
+        <section class="details-extended-section">
+          <h2>Basics</h2>
+          <div class="detail-items-grid">
+            <div class="detail-item">
+              <p class="detail-label">Manufacturer</p>
+              <p class="detail-value">{{ bikeDetails()?.manufacturer_name }}</p>
+            </div>
+            <div class="detail-item">
+              <p class="detail-label">Model</p>
+              <p class="detail-value">{{ bikeDetails()?.frame_model }}</p>
+            </div>
+            <div class="detail-item">
+              <p class="detail-label">Serial Number</p>
+              <p class="detail-value">{{ bikeDetails()?.serial }}</p>
+            </div>
           </div>
-          <div class="detail-item">
-            <p class="detail-label">Location Found</p>
-            <p class="detail-value">
-              {{ bikeDetails()?.location_found ?? "N/A" }}
-            </p>
+        </section>
+        <section class="details-extended-section">
+          <h2>Location Details</h2>
+          <div class="detail-items-grid">
+            <div class="detail-item">
+              <p class="detail-label">Location Stolen</p>
+              <p>{{ bikeDetails()?.stolen_location ?? "Unknown" }}</p>
+            </div>
+            <div class="detail-item">
+              <p class="detail-label">Location Found</p>
+              <p class="detail-value">
+                {{ bikeDetails()?.location_found ?? "N/A" }}
+              </p>
+            </div>
           </div>
-        </div>
+        </section>
       </section>
-    </section>
-  </div>
-}
+    </div>
+  }
+</div>

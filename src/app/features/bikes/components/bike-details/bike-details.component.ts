@@ -8,13 +8,14 @@ import {
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { take } from "rxjs";
+import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 import { BikesApiService } from "../../services/bikes-api.service";
 import { BikeDetails } from "../../interfaces/bike.model";
 
 @Component({
   selector: "app-bike-details",
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinner],
   templateUrl: "./bike-details.component.html",
   styleUrl: "./bike-details.component.scss",
 })
