@@ -23,14 +23,19 @@
     !isSearchResultsEmpty() &&
     bikeSearchResults().length > 0
   ) {
-    <div class="results-grid">
-      @for (
-        bikeSearchResult of bikeSearchResults();
-        track bikeSearchResult.id
-      ) {
-        <app-bike-search-result-card [bikeSearchResult]="bikeSearchResult" />
-      }
+    <div class="results-content">
+      <div class="results-grid">
+        @for (
+          bikeSearchResult of bikeSearchResults();
+          track bikeSearchResult.id
+        ) {
+          <app-bike-search-result-card [bikeSearchResult]="bikeSearchResult" />
+        }
+      </div>
+      <mat-paginator
+        class="pagination"
+        aria-label="Select page"
+      ></mat-paginator>
     </div>
-    <div class="pagination"></div>
   }
 </div>

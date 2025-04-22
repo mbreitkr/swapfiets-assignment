@@ -32,4 +32,12 @@
       active-indicator-color: $primary-color,
     )
   );
+
+  @include mat.paginator-overrides(
+    (
+      container-text-color: $text-color,
+      container-text-size: 18px,
+      enabled-icon-color: $primary-color,
+    )
+  );
 }
