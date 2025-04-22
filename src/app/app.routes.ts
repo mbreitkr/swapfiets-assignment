@@ -7,6 +7,7 @@ export const routes: Routes = [
   {
     path: "",
     component: AppLayoutComponent,
+    title: "Swapfiets Bike Locator",
     children: [
       {
         path: "search",
@@ -14,6 +15,7 @@ export const routes: Routes = [
           import("./core/pages/search/search.component").then(
             (c) => c.SearchComponent,
           ),
+        title: "Swapfiets Bike Locator",
       },
       {
         path: "details/:id",
@@ -21,9 +23,10 @@ export const routes: Routes = [
           import("./core/pages/details/details.component").then(
             (c) => c.DetailsComponent,
           ),
+        title: "Bike Details",
       },
       { path: "", redirectTo: "/search", pathMatch: "full" },
-      { path: "**", component: PageNotFoundComponent },
+      { path: "**", component: PageNotFoundComponent, title: "Page not found" },
     ],
   },
   {

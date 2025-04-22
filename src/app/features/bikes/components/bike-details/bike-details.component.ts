@@ -42,7 +42,6 @@ export class BikeDetailsComponent implements OnInit {
 
       this.bikeApi.getBikeById(Number(id)).subscribe({
         next: (bike) => {
-          console.log(bike);
           this.bikeDetails.set(bike);
           this.isLoading.set(false);
         },

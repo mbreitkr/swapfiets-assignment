@@ -68,7 +68,6 @@ export class BikeSearchComponent implements OnInit {
       resultCount: this.bikeApi.getBikesResultCountByCity(city),
     }).subscribe({
       next: ({ searchResults, resultCount }) => {
-        console.log(resultCount);
         if (resultCount === 0) this.isSearchResultsEmpty.set(true);
         this.bikeSearchResults.set(searchResults);
         this.searchResultCount.set(resultCount);
@@ -90,7 +89,6 @@ export class BikeSearchComponent implements OnInit {
   }
 
   handlePageChange(pageEvent: PageEvent): void {
-    console.log(pageEvent);
     const pageIndex = pageEvent.pageIndex;
     this.currentResultPageIndex.set(pageIndex);
     this.setRouteParams({ page: pageIndex + 1 });
