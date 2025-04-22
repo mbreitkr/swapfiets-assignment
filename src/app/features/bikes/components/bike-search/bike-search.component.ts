@@ -44,9 +44,10 @@ export class BikeSearchComponent implements OnInit {
     if ("city" in params && "page" in params) {
       const city = params["city"];
       const pageNum = params["page"];
+      const curPageIndex = pageNum - 1;
 
       this.lastSearchedText.set(city);
-      this.currentResultPageIndex.set(pageNum);
+      this.currentResultPageIndex.set(curPageIndex);
       this.searchBikes(city, pageNum);
     } else {
       this.setRouteParams({});
@@ -90,9 +91,11 @@ export class BikeSearchComponent implements OnInit {
 
   handlePageChange(pageEvent: PageEvent): void {
     const pageIndex = pageEvent.pageIndex;
+    const currentPage = pageIndex + 1;
+
     this.currentResultPageIndex.set(pageIndex);
-    this.setRouteParams({ page: pageIndex + 1 });
-    this.searchBikes(this.lastSearchedText(), pageIndex);
+    this.setRouteParams({ page: currentPage });
+    this.searchBikes(this.lastSearchedText(), currentPage);
   }
 
   setRouteParams(params: Params): void {
