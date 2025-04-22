@@ -1,4 +1,4 @@
-import { CommonModule, NgOptimizedImage } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import {
   Component,
   inject,
@@ -14,7 +14,7 @@ import { BikeDetails } from "../../interfaces/bike.model";
 
 @Component({
   selector: "app-bike-details",
-  imports: [NgOptimizedImage, CommonModule],
+  imports: [CommonModule],
   templateUrl: "./bike-details.component.html",
   styleUrl: "./bike-details.component.scss",
 })

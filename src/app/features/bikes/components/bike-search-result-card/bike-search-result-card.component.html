@@ -1,5 +1,10 @@
 <figure class="result-card">
-  <img [src]="bikeSearchResult().thumb" [alt]="bikeSearchResult().title" />
+  <div class="img-container">
+    <img
+      [src]="bikeSearchResult().thumb ?? 'img/placeholder_300x300@2x.png'"
+      [alt]="bikeSearchResult().title"
+    />
+  </div>
   <div class="result-box">
     <h2>{{ bikeSearchResult().title }}</h2>
     <ul class="result-details">

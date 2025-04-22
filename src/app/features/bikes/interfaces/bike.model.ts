@@ -5,12 +5,12 @@ export interface BikeSummary {
   manufacturer_name: string;
   status: string;
   stolen_location: string | null;
-  thumb: string;
+  thumb: string | null;
   title: string;
 }
 
 export interface BikeDetails extends BikeSummary {
   description: string;
   serial: string;
-  large_img: string;
+  large_img: string | null;
 }

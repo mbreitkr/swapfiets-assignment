@@ -12,11 +12,15 @@
     gap: 32px;
   }
 
-  img {
-    width: 100%;
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-    min-height: 300px;
+  .img-container {
+    height: 300px;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+    }
   }
 
   .result-box {

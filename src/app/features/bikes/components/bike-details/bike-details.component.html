@@ -8,13 +8,14 @@
 }
 @if (bikeDetails()) {
   <div class="details">
-    <img
-      src="{{ bikeDetails()?.large_img }}"
-      alt="{{ bikeDetails()?.title }}"
-      width="779"
-      height="634"
-      priority
-    />
+    <div class="img-container">
+      <img
+        src="{{
+          bikeDetails()?.large_img ?? '/img/placeholder_900x675@2x.png'
+        }}"
+        alt="{{ bikeDetails()?.title }}"
+      />
+    </div>
     <section class="details-summary">
       <h1>{{ bikeDetails()?.title }}</h1>
       <ul class="details-summary-list">
