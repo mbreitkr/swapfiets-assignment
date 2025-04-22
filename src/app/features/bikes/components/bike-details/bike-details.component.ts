@@ -54,4 +54,59 @@ export class BikeDetailsComponent implements OnInit {
       });
     });
   }
+
+  get bikeImage(): string {
+    return this.bikeDetails()?.large_img ?? "/img/placeholder_900x675@2x.png";
+  }
+
+  get lastKnownLocation(): string {
+    return (
+      this.bikeDetails()?.stolen_location ??
+      this.bikeDetails()?.location_found ??
+      "Unknown"
+    );
+  }
+
+  get serialNumber(): string {
+    return this.bikeDetails()?.serial ?? "Unknown";
+  }
+
+  get description(): string {
+    if (
+      this.bikeDetails() === null ||
+      this.bikeDetails()?.description === null ||
+      this.bikeDetails()?.description === ""
+    )
+      return "N/A";
+
+    return this.bikeDetails()?.description ?? "N/A";
+  }
+
+  get stolenLocation(): string {
+    if (this.bikeDetails()?.stolen === true) {
+      return this.bikeDetails()?.stolen_location ?? "Unknown";
+    } else {
+      return "N/A";
+    }
+  }
+
+  get foundLocation(): string {
+    if (this.bikeDetails()?.status.toLowerCase() === "found") {
+      return this.bikeDetails()?.location_found ?? "Unknown";
+    } else {
+      return "N/A";
+    }
+  }
+
+  get typeOfCycle(): string {
+    return this.bikeDetails()?.type_of_cycle ?? "Unknown";
+  }
+
+  get frameSize(): string {
+    return this.bikeDetails()?.frame_size ?? "Unknown";
+  }
+
+  get frameMaterial(): string {
+    return this.bikeDetails()?.frame_material_slug ?? "Unknown";
+  }
 }

@@ -14,4 +14,7 @@ export interface BikeSummary {
 export interface BikeDetails extends BikeSummary {
   description: string;
   large_img: string | null;
+  type_of_cycle: string | null;
+  frame_size: string | null;
+  frame_material_slug: string | null;
 }
