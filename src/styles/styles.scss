@@ -3,21 +3,6 @@
 @use "styles/variables" as *;
 @use "@angular/material" as mat;
 
-// TODO: Remove if not needed
-// html {
-//   @include mat.theme(
-//     (
-//       color: (
-//         theme-type: light,
-//         primary: mat.$azure-palette,
-//         tertiary: mat.$blue-palette,
-//       ),
-//       typography: Roboto,
-//       density: 0,
-//     )
-//   );
-// }
-
 :root {
   * {
     margin: 0;

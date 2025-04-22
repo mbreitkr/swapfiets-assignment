@@ -7,26 +7,23 @@ export const routes: Routes = [
   {
     path: "",
     component: AppLayoutComponent,
-    title: "App Layout",
     children: [
       {
         path: "search",
         loadComponent: () =>
           import("./core/pages/search/search.component").then(
-            (c) => c.SearchComponent
+            (c) => c.SearchComponent,
           ),
-        title: "Bike Search",
       },
       {
         path: "details/:id",
         loadComponent: () =>
           import("./core/pages/details/details.component").then(
-            (c) => c.DetailsComponent
+            (c) => c.DetailsComponent,
           ),
-        title: "Bike Details",
       },
       { path: "", redirectTo: "/search", pathMatch: "full" },
-      { path: "**", component: PageNotFoundComponent, title: "Page Not Found" },
+      { path: "**", component: PageNotFoundComponent },
     ],
   },
   {
