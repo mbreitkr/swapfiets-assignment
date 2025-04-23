@@ -2,34 +2,92 @@
 
 :host {
   .result-card {
-    width: 300px;
     height: 100%;
-    background: #fff;
-    border-radius: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 32px;
+    background-color: #fff;
+    border-radius: 1.5rem;
+    display: grid;
+    grid-template-columns: 15.625rem 1fr;
+    padding: 1.5rem;
+    column-gap: 2rem;
+    row-gap: 1.5rem;
+
+    @media (min-width: 1000px) and (max-width: 1440px) {
+      grid-template-columns: 18.75rem 25rem;
+    }
+
+    @media (max-width: 1000px) {
+      grid-template-columns: 15.625rem 21.875rem;
+    }
+
+    @media (max-width: 896px) {
+      grid-template-columns: 12.5rem 1fr;
+    }
+
+    @media (max-width: 680px) {
+      grid-template-columns: 22.5rem;
+      padding: 3rem 1.5rem;
+      justify-items: center;
+      row-gap: 3rem;
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 15.625rem;
+      padding: 3rem 1.5rem;
+      justify-items: center;
+      row-gap: 3rem;
+    }
   }
 
   .img-container {
-    height: 300px;
+    width: 250px;
+    height: 250px;
 
     img {
       width: 100%;
       height: auto;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
+    }
+
+    @media (min-width: 1000px) and (max-width: 1440px) {
+      width: 300px;
+      height: 300px;
+    }
+
+    @media (max-width: 896px) {
+      width: 200px;
+      height: 200px;
+    }
+
+    @media (max-width: 680px) {
+      width: 300px;
+      height: 300px;
+
+      img {
+        border-radius: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      width: 250px;
+      height: 250px;
     }
   }
 
   .result-box {
-    padding: 0 32px;
-    margin-bottom: 16px;
+    padding-top: 0.25rem;
 
     h2 {
-      font-size: 20px;
-      margin-bottom: 32px;
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+
+      @media (min-width: 1000px) and (max-width: 1440px) {
+        font-size: 1.5rem;
+        margin-bottom: 1.75rem;
+      }
+
+      @media (max-width: 680px) {
+        font-size: 1.5rem;
+        margin-bottom: 1.75rem;
+      }
     }
 
     .result-details {
@@ -38,18 +96,44 @@
       li {
         display: flex;
         align-items: flex-start;
-
-        gap: 12px;
-        margin-bottom: 16px;
-
+        gap: 0.75rem;
+        margin-bottom: 1rem;
         line-height: 1.4;
 
         .detail-label {
           font-weight: bold;
-          flex: 0 0 120px;
+          flex: 0 0 7.5rem;
         }
         .detail-value {
           flex: 1;
+        }
+
+        .truncate {
+          width: 13.125rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        @media (min-width: 1000px) and (max-width: 1440px) {
+          font-size: 1.125rem;
+          gap: 1.5rem;
+          margin-bottom: 1.25rem;
+        }
+
+        @media (max-width: 680px) {
+          font-size: 1.125rem;
+          gap: 1.5rem;
+          margin-bottom: 1.25rem;
+        }
+
+        @media (max-width: 480px) {
+          flex-direction: column;
+          gap: 0.5rem;
+
+          .detail-label {
+            flex: auto;
+          }
         }
       }
 
@@ -57,36 +141,45 @@
         margin-bottom: 0;
       }
     }
+
+    @media (max-width: 680px) {
+      padding: 0 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 0 1.5rem;
+    }
   }
 
-  // TODO: Make button styling cleaner
   .btn-container {
-    display: block;
-    text-decoration: none;
-    margin-bottom: 32px;
-    padding: 0 32px;
-    justify-self: end;
+    grid-column: 2;
+    padding-right: 1.5rem;
 
     .btn-more-details {
-      display: block;
-      background: none;
-      height: 48px;
-      width: 100%;
       display: flex;
+      background: none;
+      height: 3rem;
+      width: 100%;
       justify-content: center;
       align-items: center;
-      gap: 12px;
-      border-radius: 48px;
+      gap: 0.75rem;
+      border-radius: 3rem;
       border: 2px solid $primary-color;
 
       .btn-text {
         color: $primary-color;
-        font-size: 18px;
+        font-size: 1.125rem;
       }
 
       .btn-icon {
         fill: $primary-color;
       }
+    }
+
+    @media (max-width: 680px) {
+      width: 100%;
+      padding: 0;
+      grid-column: auto;
     }
   }
 }

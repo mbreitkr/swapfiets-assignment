@@ -3,11 +3,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
-    margin-bottom: 80px;
+    gap: 1.5rem;
+    margin-bottom: 5rem;
+
+    @media (max-width: 1000px) {
+      padding: 0 3rem;
+    }
 
     header {
-      width: 800px;
+      width: 100%;
+      max-width: 50rem;
 
       h1,
       p {
@@ -15,15 +20,20 @@
       }
 
       h1 {
-        font-size: 44px;
+        font-size: 2.75rem;
         line-height: 1.1;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
       }
 
       p {
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 1.7;
       }
+    }
+
+    app-bike-search-input {
+      width: 100%;
+      max-width: 31.25rem;
     }
   }
 }

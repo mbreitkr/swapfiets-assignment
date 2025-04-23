@@ -1,18 +1,23 @@
 :host {
   .page-not-found {
     position: relative;
-    padding: 48px 0;
+    padding: 3rem 0;
 
     .back-btn-container {
       position: absolute;
-      top: -72px;
+      top: -4.5rem;
       left: 0;
+
+      @media (max-width: 896px) {
+        top: -2.5rem;
+      }
     }
 
     section {
-      width: 800px;
+      width: 100%;
+      max-width: 50rem;
       margin: 0 auto;
-      margin-bottom: 80px;
+      margin-bottom: 5rem;
 
       h1,
       p {
@@ -20,13 +25,13 @@
       }
 
       h1 {
-        font-size: 44px;
+        font-size: 2.75rem;
         line-height: 1.1;
-        margin-bottom: 16px;
+        margin-bottom: 1rem;
       }
 
       p {
-        font-size: 18px;
+        font-size: 1.125rem;
         line-height: 1.7;
       }
     }
