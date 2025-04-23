@@ -32,16 +32,18 @@
           <app-bike-search-result-card [bikeSearchResult]="bikeSearchResult" />
         }
       </div>
-      <mat-paginator
-        class="pagination"
-        [length]="totalResults()"
-        [pageIndex]="currentPageIndex()"
-        [pageSize]="pageSize()"
-        [disabled]="isLoading()"
-        [showFirstLastButtons]="true"
-        (page)="handlePageEvent($event)"
-        aria-label="Select page"
-      ></mat-paginator>
+      <div class="pagination-container">
+        <mat-paginator
+          class="pagination"
+          [length]="totalResults()"
+          [pageIndex]="currentPageIndex()"
+          [pageSize]="pageSize()"
+          [disabled]="isLoading()"
+          [showFirstLastButtons]="true"
+          (page)="handlePageEvent($event)"
+          aria-label="Select page"
+        ></mat-paginator>
+      </div>
     </div>
   }
 </div>

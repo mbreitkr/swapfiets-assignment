@@ -2,6 +2,7 @@ import { Component, input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 import { BikeSummary } from "../../interfaces/bike.model";
+import { replaceEmptyBikeDetails } from "../../utils/bikeHelper";
 
 @Component({
   selector: "app-bike-search-result-card",
@@ -25,7 +26,7 @@ export class BikeSearchResultCardComponent {
   }
 
   get serialNumber(): string {
-    return this.bikeSearchResult().serial ?? "Unknown";
+    return replaceEmptyBikeDetails(this.bikeSearchResult().serial);
   }
 
   openDetailsPage(): void {

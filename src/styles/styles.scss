@@ -36,7 +36,7 @@
   @include mat.paginator-overrides(
     (
       container-text-color: $text-color,
-      container-text-size: 18px,
+      container-text-size: 1.125rem,
       enabled-icon-color: $primary-color,
     )
   );

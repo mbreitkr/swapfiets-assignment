@@ -12,6 +12,7 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 
 import { BikesApiService } from "../../services/bikes-api.service";
 import { BikeDetails } from "../../interfaces/bike.model";
+import { replaceEmptyBikeDetails } from "../../utils/bikeHelper";
 
 @Component({
   selector: "app-bike-details",
@@ -66,24 +67,21 @@ export class BikeDetailsComponent implements OnInit {
     );
   }
 
+  get frameModel(): string {
+    return replaceEmptyBikeDetails(this.bikeDetails()?.frame_model);
+  }
+
   get serialNumber(): string {
-    return this.bikeDetails()?.serial ?? "Unknown";
+    return replaceEmptyBikeDetails(this.bikeDetails()?.serial);
   }
 
   get description(): string {
-    if (
-      this.bikeDetails() === null ||
-      this.bikeDetails()?.description === null ||
-      this.bikeDetails()?.description === ""
-    )
-      return "N/A";
-
-    return this.bikeDetails()?.description ?? "N/A";
+    return replaceEmptyBikeDetails(this.bikeDetails()?.description);
   }
 
   get stolenLocation(): string {
     if (this.bikeDetails()?.stolen === true) {
-      return this.bikeDetails()?.stolen_location ?? "Unknown";
+      return replaceEmptyBikeDetails(this.bikeDetails()?.stolen_location);
     } else {
       return "N/A";
     }
@@ -91,21 +89,21 @@ export class BikeDetailsComponent implements OnInit {
 
   get foundLocation(): string {
     if (this.bikeDetails()?.status.toLowerCase() === "found") {
-      return this.bikeDetails()?.location_found ?? "Unknown";
+      return replaceEmptyBikeDetails(this.bikeDetails()?.location_found);
     } else {
       return "N/A";
     }
   }
 
   get typeOfCycle(): string {
-    return this.bikeDetails()?.type_of_cycle ?? "Unknown";
+    return replaceEmptyBikeDetails(this.bikeDetails()?.type_of_cycle);
   }
 
   get frameSize(): string {
-    return this.bikeDetails()?.frame_size ?? "Unknown";
+    return replaceEmptyBikeDetails(this.bikeDetails()?.frame_size);
   }
 
   get frameMaterial(): string {
-    return this.bikeDetails()?.frame_material_slug ?? "Unknown";
+    return replaceEmptyBikeDetails(this.bikeDetails()?.frame_material_slug);
   }
 }

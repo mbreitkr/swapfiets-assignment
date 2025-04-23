@@ -17,20 +17,27 @@
     }
 
     .results-content {
-      padding: 24px;
-
       .results-grid {
         display: grid;
         justify-items: center;
-        grid-template-columns: repeat(4, 1fr);
-        row-gap: 24px;
-        margin-bottom: 48px;
+        padding: 0 2rem;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 3rem;
+        column-gap: 2rem;
+        margin-bottom: 3rem;
+
+        @media (max-width: 1440px) {
+          grid-template-columns: 1fr;
+        }
+
+        @media (max-width: 480px) {
+          padding: 0 0.5rem;
+        }
       }
 
       mat-paginator {
         display: flex;
         justify-content: center;
-        // background-color: orange;
       }
     }
   }
