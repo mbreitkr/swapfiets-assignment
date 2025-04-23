@@ -72,8 +72,9 @@ To use the application, simply enter a city name in the search bar and browse th
 
 Some features I would like to add or update with more time include:
 
-- Check that matching bike count isn't 0 before fetching first page of results
+- Visual cleanup of Angular Material paginator component on small screens
 - Unit testing
+- Check that matching bike count isn't 0 before fetching first page of results
 - Integration/E2E testing
 - Caching of search results
 - Adding Geolocation for easier and cleaner city search
