@@ -6,8 +6,9 @@ import {
   BIKE_INDEX_V3_API_BASE_URL as BASE_URL,
   BIKE_SEARCH_RADIUS_MILES,
 } from "../../../core/constants/api.config";
-import { BikeDetails, BikeSummary } from "../interfaces/bike.model";
+import { BikeColor, BikeDetails, BikeSummary } from "../interfaces/bike.model";
 import {
+  BikeColorsResponse,
   BikeDetailsResponse,
   BikeSearchCountResponse,
   BikeSearchResponse,
@@ -21,6 +22,7 @@ export class BikesApiService {
 
   getBikesByCity(
     city: string,
+    color: string,
     pageNumber: number,
     resultsPerPage: number,
   ): Observable<BikeSummary[]> {
@@ -29,7 +31,10 @@ export class BikesApiService {
       .set("page", pageNumber)
       .set("per_page", resultsPerPage)
       .set("stolenness", "proximity")
-      .set("distance", BIKE_SEARCH_RADIUS_MILES);
+      .set("distance", BIKE_SEARCH_RADIUS_MILES)
+      .set("colors", color);
+
+    if (color) searchParams.set("colors", color);
 
     return this.http
       .get<BikeSearchResponse>(`${BASE_URL}/search`, {
@@ -55,5 +60,11 @@ export class BikesApiService {
     return this.http
       .get<BikeDetailsResponse>(`${BASE_URL}/bikes/${id}`)
       .pipe(map((resp) => resp.bike));
+  }
+
+  getBikeColors(): Observable<BikeColor[]> {
+    return this.http
+      .get<BikeColorsResponse>(`${BASE_URL}/selections/colors`)
+      .pipe(map((resp) => resp.colors));
   }
 }

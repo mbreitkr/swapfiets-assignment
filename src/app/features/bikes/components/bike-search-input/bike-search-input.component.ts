@@ -1,10 +1,26 @@
-import { Component, effect, input, output } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
+import { BikeColor } from "../../interfaces/bike.model";
+import { BikesApiService } from "../../services/bikes-api.service";
+import { BikeSearchFormValues } from "../../interfaces/bike-search-form.model";
+
+interface BikeSearchForm {
+  city: FormControl<string>;
+  color: FormControl<string>;
+}
 
 @Component({
   selector: "app-bike-search-input",
@@ -12,13 +28,27 @@ import {
   templateUrl: "./bike-search-input.component.html",
   styleUrl: "./bike-search-input.component.scss",
 })
-export class BikeSearchInputComponent {
+export class BikeSearchInputComponent implements OnInit {
   isLoading = input(false);
-  searchSubmit = output<string>();
+  searchSubmit = output<BikeSearchFormValues>();
 
-  searchForm = new FormGroup({
-    city: new FormControl("", Validators.required),
+  colors = signal<BikeColor[] | undefined>(undefined);
+
+  private bikeApi = inject(BikesApiService);
+
+  searchForm = new FormGroup<BikeSearchForm>({
+    city: new FormControl("", {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    color: new FormControl("", { nonNullable: true }),
   });
+
+  ngOnInit(): void {
+    this.bikeApi.getBikeColors().subscribe((c) => {
+      this.colors.set(c);
+    });
+  }
 
   constructor() {
     effect(() => {
@@ -32,9 +62,7 @@ export class BikeSearchInputComponent {
   }
 
   onSubmit(): void {
-    const city = this.searchForm.value.city;
-    if (city === undefined || city === null || city === "") return;
-
-    if (this.searchForm.valid) this.searchSubmit.emit(city);
+    const formValues = this.searchForm.value as BikeSearchFormValues;
+    if (this.searchForm.valid) this.searchSubmit.emit(formValues);
   }
 }

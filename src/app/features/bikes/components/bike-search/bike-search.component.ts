@@ -16,6 +16,7 @@ import { BikeSearchResultsComponent } from "../bike-search-results/bike-search-r
 import { BikeSummary } from "../../interfaces/bike.model";
 import { BikesApiService } from "../../services/bikes-api.service";
 import { BIKE_SEARCH_RESULTS_PER_PAGE } from "../../../../core/constants/api.config";
+import { BikeSearchFormValues } from "../../interfaces/bike-search-form.model";
 
 @Component({
   selector: "app-bike-search",
@@ -48,13 +49,13 @@ export class BikeSearchComponent implements OnInit {
 
       this.lastSearchedText.set(city);
       this.currentResultPageIndex.set(curPageIndex);
-      this.searchBikes(city, pageNum);
+      this.searchBikes(city, "", pageNum);
     } else {
       this.setRouteParams({});
     }
   }
 
-  searchBikes(city: string, pageNumber = 1): void {
+  searchBikes(city: string, color = "", pageNumber = 1): void {
     this.isSearchResultsError.set(false);
     this.isSearchResultsEmpty.set(false);
     this.isSearchResultsLoading.set(true);
@@ -63,6 +64,7 @@ export class BikeSearchComponent implements OnInit {
     forkJoin({
       searchResults: this.bikeApi.getBikesByCity(
         city,
+        color,
         pageNumber,
         this.searchResultPageSize(),
       ),
@@ -82,11 +84,11 @@ export class BikeSearchComponent implements OnInit {
     });
   }
 
-  handleSearchSubmit(city: string) {
+  handleSearchSubmit({ city, color }: BikeSearchFormValues) {
     this.lastSearchedText.set(city);
     this.currentResultPageIndex.set(0);
-    this.setRouteParams({ city: city, page: 1 });
-    this.searchBikes(city);
+    this.setRouteParams({ city: city, page: 1, color });
+    this.searchBikes(city, color);
   }
 
   handlePageChange(pageEvent: PageEvent): void {
@@ -95,7 +97,7 @@ export class BikeSearchComponent implements OnInit {
 
     this.currentResultPageIndex.set(pageIndex);
     this.setRouteParams({ page: currentPage });
-    this.searchBikes(this.lastSearchedText(), currentPage);
+    this.searchBikes(this.lastSearchedText(), "", currentPage);
   }
 
   setRouteParams(params: Params): void {

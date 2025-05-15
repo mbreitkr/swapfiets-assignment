@@ -4,12 +4,23 @@
   [formGroup]="searchForm"
   (ngSubmit)="onSubmit()"
 >
-  <input
-    formControlName="city"
-    placeholder="City search"
-    type="text"
-    aria-label="Search for bikes by city name"
-  />
+  <div class="form-field">
+    <label for="search-input-field-city">City</label>
+    <input
+      formControlName="city"
+      placeholder="Enter city"
+      type="text"
+      id="search-input-field-city"
+    />
+  </div>
+  <div class="form-field">
+    <label for="search-input-field-colors">Bike Colors</label>
+    <select id="search-input-field-colors" formControlName="color">
+      @for (color of colors(); track color.id) {
+        <option [value]="color.slug">{{ color.name }}</option>
+      }
+    </select>
+  </div>
   <button [disabled]="isLoading()">
     <svg
       xmlns="http://www.w3.org/2000/svg"
