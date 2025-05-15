@@ -88,7 +88,10 @@
               }
             ],
             "styles": ["src/styles/styles.scss"],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src"]
+            }
           }
         },
         "lint": {
