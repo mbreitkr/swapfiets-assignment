@@ -7,19 +7,25 @@
     <ul class="result-details">
       <li>
         <p class="detail-label">Status</p>
-        <p class="detail-value">{{ bikeSearchResult().status | titlecase }}</p>
+        <p class="detail-value" data-testid="status-value">
+          {{ bikeSearchResult().status | titlecase }}
+        </p>
       </li>
       <li>
         <p class="detail-label">Serial #</p>
-        <p class="detail-value truncate">{{ serialNumber }}</p>
+        <p class="detail-value truncate" data-testid="serial-value">
+          {{ serialNumber }}
+        </p>
       </li>
       <li>
         <p class="detail-label">Manufacturer</p>
-        <p class="detail-value">{{ bikeSearchResult().manufacturer_name }}</p>
+        <p class="detail-value" data-testid="manufacturer-value">
+          {{ bikeSearchResult().manufacturer_name }}
+        </p>
       </li>
       <li>
         <p class="detail-label">Last Known Location</p>
-        <p class="detail-value">
+        <p class="detail-value" data-testid="last-location-value">
           {{ lastKnownLocation }}
         </p>
       </li>
