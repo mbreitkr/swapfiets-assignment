@@ -15,6 +15,7 @@ import { expectStaticBikeSearchParams } from "../testing/bike-api-test-helpers";
 import { bikeSummariesMock } from "../testing/mocks/bike-search-results.mock";
 import { bikeDetailsMock } from "../testing/mocks/bike-details.mock";
 import { bikeResultsCountMock } from "../testing/mocks/bike-results-count.mock";
+import { bikeColorsMock } from "../testing/mocks/bike-colors.mock";
 
 describe("BikesApiService", () => {
   let bikeApiService: BikesApiService;
@@ -38,11 +39,12 @@ describe("BikesApiService", () => {
     it("should return a valid page of search results", () => {
       // SETUP
       const city = "Amsterdam";
+      const color = "";
       const pageNumber = 1;
       const singleBikeId = 2710350;
       // EXECUTION
       bikeApiService
-        .getBikesByCity(city, pageNumber, resultsPerPage)
+        .getBikesByCity(city, color, pageNumber, resultsPerPage)
         .subscribe((bikeSummaries) => {
           // ASSERT
           expect(bikeSummaries).toBeTruthy();
@@ -60,6 +62,35 @@ describe("BikesApiService", () => {
       expect(request.request.method).toBe("GET");
       // Query param checks
       expect(request.request.params.get("location")).toBe(city);
+      expect(request.request.params.get("color")).toBeNull();
+      expect(request.request.params.get("page")).toBe(pageNumber.toString());
+      expect(request.request.params.get("per_page")).toBe(
+        resultsPerPage.toString(),
+      );
+      expectStaticBikeSearchParams(request);
+
+      request.flush({ bikes: bikeSummariesMock });
+    });
+
+    it("should set the color param on the request if color is not an empty string", () => {
+      const city = "Amsterdam";
+      const color = "brown";
+      const pageNumber = 1;
+      // EXECUTION
+      bikeApiService
+        .getBikesByCity(city, color, pageNumber, resultsPerPage)
+        .subscribe((bikeSummaries) => {
+          // ASSERT
+          expect(bikeSummaries).toBeTruthy();
+        });
+
+      const request = httpTestingController.expectOne(
+        (req) => req.url === `${BIKE_INDEX_V3_API_BASE_URL}/search`,
+      );
+      expect(request.request.method).toBe("GET");
+      // Query param checks
+      expect(request.request.params.get("location")).toBe(city);
+      expect(request.request.params.get("colors")).toBe(color);
       expect(request.request.params.get("page")).toBe(pageNumber.toString());
       expect(request.request.params.get("per_page")).toBe(
         resultsPerPage.toString(),
@@ -72,12 +103,13 @@ describe("BikesApiService", () => {
     it("should produce a 500 error if the server responds with a 500 error", () => {
       // SETUP
       const city = "Amsterdam";
+      const color = "";
       const pageNumber = 1;
       const errorMessage = "Internal server error";
 
       // EXECUTION
       bikeApiService
-        .getBikesByCity(city, pageNumber, resultsPerPage)
+        .getBikesByCity(city, color, pageNumber, resultsPerPage)
         .subscribe({
           next: () =>
             fail("the getBikesByCity operation should have produced an error"), // ASSERTION
@@ -108,13 +140,16 @@ describe("BikesApiService", () => {
     it("should return a valid bikes result count", () => {
       // SETUP
       const city = "Amsterdam";
+      const color = "";
       const bikeResultsCount = bikeResultsCountMock.proximity;
 
       // EXECUTION
-      bikeApiService.getBikesResultCountByCity(city).subscribe((count) => {
-        // ASSERTION
-        expect(count).toBe(bikeResultsCount);
-      });
+      bikeApiService
+        .getBikesResultCountByCity(city, color)
+        .subscribe((count) => {
+          // ASSERTION
+          expect(count).toBe(bikeResultsCount);
+        });
 
       // ASSERTION
       const request = httpTestingController.expectOne(
@@ -128,13 +163,40 @@ describe("BikesApiService", () => {
       request.flush(bikeResultsCountMock); // EXECUTION
     });
 
+    it("should set the color param on the request if color is not an empty string", () => {
+      // SETUP
+      const city = "Amsterdam";
+      const color = "brown";
+
+      // EXECUTION
+      bikeApiService
+        .getBikesResultCountByCity(city, color)
+        .subscribe((count) => {
+          // ASSERTION
+          expect(count).toBeTruthy();
+        });
+
+      // ASSERTION
+      const request = httpTestingController.expectOne(
+        (req) => req.url === `${BIKE_INDEX_V3_API_BASE_URL}/search/count`,
+      );
+      expect(request.request.method).toBe("GET");
+      // Query param check
+      expect(request.request.params.get("location")).toBe(city);
+      expect(request.request.params.get("colors")).toBe(color);
+      expectStaticBikeSearchParams(request);
+
+      request.flush(bikeResultsCountMock); // EXECUTION
+    });
+
     it("should produce a 500 error if the server responds with a 500 error", () => {
       // SETUP
       const city = "Amsterdam";
+      const color = "";
       const errorMessage = "Internal server error";
 
       // EXECUTION
-      bikeApiService.getBikesResultCountByCity(city).subscribe({
+      bikeApiService.getBikesResultCountByCity(city, color).subscribe({
         next: () =>
           fail(
             "the getBikesResultCountByCity operation should have produced an error",
@@ -153,6 +215,50 @@ describe("BikesApiService", () => {
       // Query param check
       expect(request.request.params.get("location")).toBe(city);
       expectStaticBikeSearchParams(request);
+
+      request.flush(errorMessage, {
+        status: 500,
+        statusText: "Internal server error",
+      }); // EXECUTION
+    });
+  });
+
+  describe("getBikeColors()", () => {
+    it("should return an array of available color objects", () => {
+      // EXECUTION
+      bikeApiService.getBikeColors().subscribe((bikeColors) => {
+        // ASSERTION
+        expect(bikeColors).toBeTruthy();
+        expect(bikeColors.length).toBe(13);
+      });
+
+      // ASSERTION
+      const request = httpTestingController.expectOne(
+        (req) => req.url === `${BIKE_INDEX_V3_API_BASE_URL}/selections/colors`,
+      );
+      expect(request.request.method).toBe("GET");
+
+      request.flush({ colors: bikeColorsMock }); // EXECUTION
+    });
+    it("should produce a 500 error if the server responds with a 500 error", () => {
+      // SETUP
+      const errorMessage = "Internal server error";
+
+      // EXECUTION
+      bikeApiService.getBikeColors().subscribe({
+        next: () =>
+          fail("the getBikeColors operation should have produced an error"),
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(500);
+          expect(error.error).toBe(errorMessage);
+        },
+      });
+
+      // ASSERTION
+      const request = httpTestingController.expectOne(
+        (req) => req.url === `${BIKE_INDEX_V3_API_BASE_URL}/selections/colors`,
+      );
+      expect(request.request.method).toBe("GET");
 
       request.flush(errorMessage, {
         status: 500,

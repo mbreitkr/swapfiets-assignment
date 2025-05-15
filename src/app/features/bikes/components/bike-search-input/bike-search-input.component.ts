@@ -1,10 +1,26 @@
-import { Component, effect, input, output } from "@angular/core";
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from "@angular/core";
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
+import { BikeColor } from "../../interfaces/bike.model";
+import { BikesApiService } from "../../services/bikes-api.service";
+import { BikeSearchFormValues } from "../../interfaces/bike-search-form.model";
+
+interface BikeSearchForm {
+  city: FormControl<string>;
+  color: FormControl<string>;
+}
 
 @Component({
   selector: "app-bike-search-input",
@@ -12,13 +28,34 @@ import {
   templateUrl: "./bike-search-input.component.html",
   styleUrl: "./bike-search-input.component.scss",
 })
-export class BikeSearchInputComponent {
+export class BikeSearchInputComponent implements OnInit {
   isLoading = input(false);
-  searchSubmit = output<string>();
+  lastSearchedCity = input("");
+  lastSearchedColor = input("");
+  searchSubmit = output<BikeSearchFormValues>();
 
-  searchForm = new FormGroup({
-    city: new FormControl("", Validators.required),
+  colors = signal<BikeColor[]>([]);
+
+  private bikeApi = inject(BikesApiService);
+
+  searchForm = new FormGroup<BikeSearchForm>({
+    city: new FormControl("", {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    color: new FormControl("", { nonNullable: true }),
   });
+
+  ngOnInit(): void {
+    this.bikeApi.getBikeColors().subscribe((c) => {
+      this.colors.set(c);
+    });
+    // Form rehydration
+    this.searchForm.patchValue({
+      city: this.lastSearchedCity() || "",
+      color: this.lastSearchedColor() || "",
+    });
+  }
 
   constructor() {
     effect(() => {
@@ -31,10 +68,16 @@ export class BikeSearchInputComponent {
     });
   }
 
-  onSubmit(): void {
-    const city = this.searchForm.value.city;
-    if (city === undefined || city === null || city === "") return;
+  get colorFormControl(): FormControl<string> {
+    return this.searchForm.get("color") as FormControl<string>;
+  }
 
-    if (this.searchForm.valid) this.searchSubmit.emit(city);
+  onSubmit(): void {
+    const formValues = this.searchForm.getRawValue();
+    if (this.searchForm.valid) this.searchSubmit.emit(formValues);
+  }
+
+  handleColorReset(): void {
+    this.colorFormControl.reset("");
   }
 }

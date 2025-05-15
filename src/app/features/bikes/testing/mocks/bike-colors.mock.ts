@@ -1,0 +1,80 @@
+export const bikeColorsMock = [
+  {
+    name: "Black",
+    slug: "black",
+    id: 1,
+    hex_code: "#000",
+  },
+  {
+    name: "Blue",
+    slug: "blue",
+    id: 6,
+    hex_code: "#386ed2",
+  },
+  {
+    name: "Brown",
+    slug: "brown",
+    id: 10,
+    hex_code: "#734a22",
+  },
+  {
+    name: "Green",
+    slug: "green",
+    id: 5,
+    hex_code: "#1ba100",
+  },
+  {
+    name: "Orange",
+    slug: "orange",
+    id: 9,
+    hex_code: "#ff8d1d",
+  },
+  {
+    name: "Pink",
+    slug: "pink",
+    id: 8,
+    hex_code: "#ff7dfd",
+  },
+  {
+    name: "Purple",
+    slug: "purple",
+    id: 7,
+    hex_code: "#a745c0",
+  },
+  {
+    name: "Red",
+    slug: "red",
+    id: 4,
+    hex_code: "#ec1313",
+  },
+  {
+    name: "Silver, gray or bare metal",
+    slug: "silver",
+    id: 3,
+    hex_code: "#b0b0b0",
+  },
+  {
+    name: "Stickers tape or other cover-up",
+    slug: "stickers",
+    id: 13,
+    hex_code: null,
+  },
+  {
+    name: "Teal",
+    slug: "teal",
+    id: 14,
+    hex_code: "#3bede7",
+  },
+  {
+    name: "White",
+    slug: "white",
+    id: 2,
+    hex_code: "#fff",
+  },
+  {
+    name: "Yellow or Gold",
+    slug: "yellow",
+    id: 12,
+    hex_code: "#fff44b",
+  },
+];

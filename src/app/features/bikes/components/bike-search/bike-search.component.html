@@ -9,6 +9,8 @@
   </header>
   <app-bike-search-input
     [isLoading]="isSearchResultsLoading()"
+    [lastSearchedCity]="lastSearchedText()"
+    [lastSearchedColor]="lastSearchedColor()"
     (searchSubmit)="handleSearchSubmit($event)"
   />
 </section>

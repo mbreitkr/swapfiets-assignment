@@ -18,3 +18,10 @@ export interface BikeDetails extends BikeSummary {
   frame_size: string | null;
   frame_material_slug: string | null;
 }
+
+export interface BikeColor {
+  name: string;
+  slug: string;
+  id: number;
+  hex_code: string;
+}

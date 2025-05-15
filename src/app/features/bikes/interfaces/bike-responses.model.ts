@@ -1,4 +1,4 @@
-import { BikeDetails, BikeSummary } from "./bike.model";
+import { BikeColor, BikeDetails, BikeSummary } from "./bike.model";
 
 export interface BikeSearchResponse {
   bikes: BikeSummary[];
@@ -12,4 +12,8 @@ export interface BikeSearchCountResponse {
   proximity: number;
   stolen: number;
   non: number;
+}
+
+export interface BikeColorsResponse {
+  colors: BikeColor[];
 }
