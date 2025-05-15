@@ -14,7 +14,7 @@
     />
   </div>
   <div class="form-field">
-    <label for="search-input-field-colors">Bike Colors</label>
+    <label for="search-input-field-colors">Bike Color</label>
     <select id="search-input-field-colors" formControlName="color">
       @for (color of colors(); track color.id) {
         <option [value]="color.slug">{{ color.name }}</option>
@@ -26,9 +26,9 @@
       [disabled]="isLoading()"
       class="btn btn--reset"
       type="button"
-      (click)="handleColorsReset()"
+      (click)="handleColorReset()"
     >
-      Clear colors
+      Clear color
     </button>
     <button [disabled]="isLoading()" class="btn btn--submit" type="submit">
       <span>Submit form</span>

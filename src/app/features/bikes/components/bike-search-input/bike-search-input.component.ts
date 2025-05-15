@@ -77,7 +77,7 @@ export class BikeSearchInputComponent implements OnInit {
     if (this.searchForm.valid) this.searchSubmit.emit(formValues);
   }
 
-  handleColorsReset(): void {
+  handleColorReset(): void {
     this.colorFormControl.reset("");
   }
 }
