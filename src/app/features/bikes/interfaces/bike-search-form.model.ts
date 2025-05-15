@@ -1,4 +1,4 @@
 export interface BikeSearchFormValues {
   city: string;
-  color?: string;
+  color: string;
 }

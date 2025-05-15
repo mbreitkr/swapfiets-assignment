@@ -27,6 +27,7 @@ import { BikeSearchFormValues } from "../../interfaces/bike-search-form.model";
 export class BikeSearchComponent implements OnInit {
   bikeSearchResults: WritableSignal<BikeSummary[]> = signal([]);
   lastSearchedText = signal("");
+  lastSearchedColor = signal("");
   searchResultCount = signal(0);
   currentResultPageIndex = signal(0);
   isSearchResultsLoading = signal(false);
@@ -45,17 +46,19 @@ export class BikeSearchComponent implements OnInit {
     if ("city" in params && "page" in params) {
       const city = params["city"];
       const pageNum = params["page"];
+      const color = params["color"] ?? "";
       const curPageIndex = pageNum - 1;
 
       this.lastSearchedText.set(city);
+      this.lastSearchedColor.set(color);
       this.currentResultPageIndex.set(curPageIndex);
-      this.searchBikes(city, "", pageNum);
+      this.searchBikes(city, color, pageNum);
     } else {
       this.setRouteParams({});
     }
   }
 
-  searchBikes(city: string, color = "", pageNumber = 1): void {
+  searchBikes(city: string, color: string, pageNumber = 1): void {
     this.isSearchResultsError.set(false);
     this.isSearchResultsEmpty.set(false);
     this.isSearchResultsLoading.set(true);
@@ -68,7 +71,7 @@ export class BikeSearchComponent implements OnInit {
         pageNumber,
         this.searchResultPageSize(),
       ),
-      resultCount: this.bikeApi.getBikesResultCountByCity(city),
+      resultCount: this.bikeApi.getBikesResultCountByCity(city, color),
     }).subscribe({
       next: ({ searchResults, resultCount }) => {
         if (resultCount === 0) this.isSearchResultsEmpty.set(true);
@@ -86,8 +89,13 @@ export class BikeSearchComponent implements OnInit {
 
   handleSearchSubmit({ city, color }: BikeSearchFormValues) {
     this.lastSearchedText.set(city);
+    this.lastSearchedColor.set(color);
     this.currentResultPageIndex.set(0);
-    this.setRouteParams({ city: city, page: 1, color });
+    this.setRouteParams({
+      city: city,
+      page: 1,
+      color: color !== "" ? color : null,
+    });
     this.searchBikes(city, color);
   }
 
@@ -97,7 +105,11 @@ export class BikeSearchComponent implements OnInit {
 
     this.currentResultPageIndex.set(pageIndex);
     this.setRouteParams({ page: currentPage });
-    this.searchBikes(this.lastSearchedText(), "", currentPage);
+    this.searchBikes(
+      this.lastSearchedText(),
+      this.lastSearchedColor(),
+      currentPage,
+    );
   }
 
   setRouteParams(params: Params): void {

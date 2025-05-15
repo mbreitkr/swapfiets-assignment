@@ -26,15 +26,14 @@ export class BikesApiService {
     pageNumber: number,
     resultsPerPage: number,
   ): Observable<BikeSummary[]> {
-    const searchParams = new HttpParams()
+    let searchParams = new HttpParams()
       .set("location", city)
       .set("page", pageNumber)
       .set("per_page", resultsPerPage)
       .set("stolenness", "proximity")
-      .set("distance", BIKE_SEARCH_RADIUS_MILES)
-      .set("colors", color);
+      .set("distance", BIKE_SEARCH_RADIUS_MILES);
 
-    if (color) searchParams.set("colors", color);
+    if (color !== "") searchParams = searchParams.set("colors", color);
 
     return this.http
       .get<BikeSearchResponse>(`${BASE_URL}/search`, {
@@ -43,11 +42,13 @@ export class BikesApiService {
       .pipe(map((resp) => resp.bikes));
   }
 
-  getBikesResultCountByCity(city: string): Observable<number> {
-    const searchParams = new HttpParams()
+  getBikesResultCountByCity(city: string, color: string): Observable<number> {
+    let searchParams = new HttpParams()
       .set("location", city)
       .set("stolenness", "proximity")
       .set("distance", BIKE_SEARCH_RADIUS_MILES);
+
+    if (color !== "") searchParams = searchParams.set("colors", color);
 
     return this.http
       .get<BikeSearchCountResponse>(`${BASE_URL}/search/count`, {

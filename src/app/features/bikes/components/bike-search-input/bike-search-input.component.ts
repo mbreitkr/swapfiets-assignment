@@ -30,9 +30,11 @@ interface BikeSearchForm {
 })
 export class BikeSearchInputComponent implements OnInit {
   isLoading = input(false);
+  lastSearchedCity = input("");
+  lastSearchedColor = input("");
   searchSubmit = output<BikeSearchFormValues>();
 
-  colors = signal<BikeColor[] | undefined>(undefined);
+  colors = signal<BikeColor[]>([]);
 
   private bikeApi = inject(BikesApiService);
 
@@ -48,6 +50,11 @@ export class BikeSearchInputComponent implements OnInit {
     this.bikeApi.getBikeColors().subscribe((c) => {
       this.colors.set(c);
     });
+    // Form rehydration
+    this.searchForm.patchValue({
+      city: this.lastSearchedCity() || "",
+      color: this.lastSearchedColor() || "",
+    });
   }
 
   constructor() {
@@ -61,8 +68,16 @@ export class BikeSearchInputComponent implements OnInit {
     });
   }
 
+  get colorFormControl(): FormControl<string> {
+    return this.searchForm.get("color") as FormControl<string>;
+  }
+
   onSubmit(): void {
-    const formValues = this.searchForm.value as BikeSearchFormValues;
+    const formValues = this.searchForm.getRawValue();
     if (this.searchForm.valid) this.searchSubmit.emit(formValues);
+  }
+
+  handleColorsReset(): void {
+    this.colorFormControl.reset("");
   }
 }
