@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import {
   Component,
+  DestroyRef,
   inject,
   OnInit,
   signal,
@@ -13,6 +14,7 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import { BikesApiService } from "../../services/bikes-api.service";
 import { BikeDetails } from "../../interfaces/bike.model";
 import { replaceEmptyBikeDetails } from "../../utils/bikeHelper";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-bike-details",
@@ -27,6 +29,7 @@ export class BikeDetailsComponent implements OnInit {
 
   private bikeApi = inject(BikesApiService);
   private route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.isError.set(false);
@@ -41,17 +44,20 @@ export class BikeDetailsComponent implements OnInit {
         return;
       }
 
-      this.bikeApi.getBikeById(Number(id)).subscribe({
-        next: (bike) => {
-          this.bikeDetails.set(bike);
-          this.isLoading.set(false);
-        },
-        error: (err) => {
-          this.isError.set(true);
-          console.error(err);
-          this.isLoading.set(false);
-        },
-      });
+      this.bikeApi
+        .getBikeById(Number(id))
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (bike) => {
+            this.bikeDetails.set(bike);
+            this.isLoading.set(false);
+          },
+          error: (err) => {
+            this.isError.set(true);
+            console.error(err);
+            this.isLoading.set(false);
+          },
+        });
     });
   }
 

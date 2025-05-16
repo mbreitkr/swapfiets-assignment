@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  DestroyRef,
   inject,
   OnInit,
   signal,
@@ -17,6 +18,7 @@ import { BikeSummary } from "../../interfaces/bike.model";
 import { BikesApiService } from "../../services/bikes-api.service";
 import { BIKE_SEARCH_RESULTS_PER_PAGE } from "../../../../core/constants/api.config";
 import { BikeSearchFormValues } from "../../interfaces/bike-search-form.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-bike-search",
@@ -38,6 +40,7 @@ export class BikeSearchComponent implements OnInit {
   private bikeApi = inject(BikesApiService);
   private readonly route = inject(ActivatedRoute);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   currentResultPage = computed(() => this.currentResultPageIndex() + 1);
 
@@ -72,19 +75,21 @@ export class BikeSearchComponent implements OnInit {
         this.searchResultPageSize(),
       ),
       resultCount: this.bikeApi.getBikesResultCountByCity(city, color),
-    }).subscribe({
-      next: ({ searchResults, resultCount }) => {
-        if (resultCount === 0) this.isSearchResultsEmpty.set(true);
-        this.bikeSearchResults.set(searchResults);
-        this.searchResultCount.set(resultCount);
-        this.isSearchResultsLoading.set(false);
-      },
-      error: (err) => {
-        this.isSearchResultsError.set(true);
-        console.error(err);
-        this.isSearchResultsLoading.set(false);
-      },
-    });
+    })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: ({ searchResults, resultCount }) => {
+          if (resultCount === 0) this.isSearchResultsEmpty.set(true);
+          this.bikeSearchResults.set(searchResults);
+          this.searchResultCount.set(resultCount);
+          this.isSearchResultsLoading.set(false);
+        },
+        error: (err) => {
+          this.isSearchResultsError.set(true);
+          console.error(err);
+          this.isSearchResultsLoading.set(false);
+        },
+      });
   }
 
   handleSearchSubmit({ city, color }: BikeSearchFormValues) {

@@ -5,7 +5,6 @@ import {
   input,
   OnInit,
   output,
-  signal,
 } from "@angular/core";
 import {
   FormControl,
@@ -13,7 +12,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { BikeColor } from "../../interfaces/bike.model";
+import { toSignal } from "@angular/core/rxjs-interop";
+
 import { BikesApiService } from "../../services/bikes-api.service";
 import { BikeSearchFormValues } from "../../interfaces/bike-search-form.model";
 
@@ -34,8 +34,6 @@ export class BikeSearchInputComponent implements OnInit {
   lastSearchedColor = input("");
   searchSubmit = output<BikeSearchFormValues>();
 
-  colors = signal<BikeColor[]>([]);
-
   private bikeApi = inject(BikesApiService);
 
   searchForm = new FormGroup<BikeSearchForm>({
@@ -46,10 +44,9 @@ export class BikeSearchInputComponent implements OnInit {
     color: new FormControl("", { nonNullable: true }),
   });
 
+  colors = toSignal(this.bikeApi.getBikeColors(), { initialValue: [] });
+
   ngOnInit(): void {
-    this.bikeApi.getBikeColors().subscribe((c) => {
-      this.colors.set(c);
-    });
     // Form rehydration
     this.searchForm.patchValue({
       city: this.lastSearchedCity() || "",
