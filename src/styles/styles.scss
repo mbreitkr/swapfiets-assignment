@@ -16,17 +16,6 @@
     line-height: 1;
   }
 
-  input,
-  select,
-  textarea,
-  button {
-    font-family: inherit;
-  }
-
-  button {
-    cursor: pointer;
-  }
-
   select {
     appearance: none;
     -webkit-appearance: none;
@@ -37,6 +26,28 @@
     background-repeat: no-repeat;
     background-position: right 0.5rem center;
     background-size: 1rem;
+    cursor: pointer;
+  }
+
+  input:disabled,
+  textarea:disabled,
+  select:disabled {
+    cursor: default;
+    background-color: light-dark(
+      rgba(239, 239, 239, 0.3),
+      rgba(59, 59, 59, 0.3)
+    );
+    color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-family: inherit;
+  }
+
+  button {
     cursor: pointer;
   }
 
