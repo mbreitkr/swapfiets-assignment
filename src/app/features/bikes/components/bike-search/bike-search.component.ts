@@ -1,24 +1,12 @@
-import {
-  Component,
-  computed,
-  DestroyRef,
-  inject,
-  OnInit,
-  signal,
-  WritableSignal,
-} from "@angular/core";
-import { forkJoin } from "rxjs";
-import { PageEvent } from "@angular/material/paginator";
+import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
+import { PageEvent } from "@angular/material/paginator";
 
 import { BikeSearchInputComponent } from "../bike-search-input/bike-search-input.component";
 import { BikeSearchResultsComponent } from "../bike-search-results/bike-search-results.component";
 
-import { BikeSummary } from "../../interfaces/bike.model";
-import { BikesApiService } from "../../services/bikes-api.service";
-import { BIKE_SEARCH_RESULTS_PER_PAGE } from "../../../../core/constants/api.config";
 import { BikeSearchFormValues } from "../../interfaces/bike-search-form.model";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { BikeSearchService } from "../../services/bike-search.service";
 
 @Component({
   selector: "app-bike-search",
@@ -27,20 +15,13 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   styleUrl: "./bike-search.component.scss",
 })
 export class BikeSearchComponent implements OnInit {
-  bikeSearchResults: WritableSignal<BikeSummary[]> = signal([]);
   lastSearchedText = signal("");
   lastSearchedColor = signal("");
-  searchResultCount = signal(0);
   currentResultPageIndex = signal(0);
-  isSearchResultsLoading = signal(false);
-  isSearchResultsError = signal(false);
-  isSearchResultsEmpty = signal(false);
-  searchResultPageSize = signal(BIKE_SEARCH_RESULTS_PER_PAGE);
 
-  private bikeApi = inject(BikesApiService);
   private readonly route = inject(ActivatedRoute);
   private router = inject(Router);
-  private destroyRef = inject(DestroyRef);
+  protected readonly bikeSearchService = inject(BikeSearchService);
 
   currentResultPage = computed(() => this.currentResultPageIndex() + 1);
 
@@ -55,41 +36,10 @@ export class BikeSearchComponent implements OnInit {
       this.lastSearchedText.set(city);
       this.lastSearchedColor.set(color);
       this.currentResultPageIndex.set(curPageIndex);
-      this.searchBikes(city, color, pageNum);
+      this.bikeSearchService.searchBikes(city, color, pageNum);
     } else {
       this.setRouteParams({});
     }
-  }
-
-  searchBikes(city: string, color: string, pageNumber = 1): void {
-    this.isSearchResultsError.set(false);
-    this.isSearchResultsEmpty.set(false);
-    this.isSearchResultsLoading.set(true);
-    this.bikeSearchResults.set([]);
-
-    forkJoin({
-      searchResults: this.bikeApi.getBikesByCity(
-        city,
-        color,
-        pageNumber,
-        this.searchResultPageSize(),
-      ),
-      resultCount: this.bikeApi.getBikesResultCountByCity(city, color),
-    })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: ({ searchResults, resultCount }) => {
-          if (resultCount === 0) this.isSearchResultsEmpty.set(true);
-          this.bikeSearchResults.set(searchResults);
-          this.searchResultCount.set(resultCount);
-          this.isSearchResultsLoading.set(false);
-        },
-        error: (err) => {
-          this.isSearchResultsError.set(true);
-          console.error(err);
-          this.isSearchResultsLoading.set(false);
-        },
-      });
   }
 
   handleSearchSubmit({ city, color }: BikeSearchFormValues) {
@@ -101,7 +51,7 @@ export class BikeSearchComponent implements OnInit {
       page: 1,
       color: color !== "" ? color : null,
     });
-    this.searchBikes(city, color);
+    this.bikeSearchService.searchBikes(city, color);
   }
 
   handlePageChange(pageEvent: PageEvent): void {
@@ -110,7 +60,7 @@ export class BikeSearchComponent implements OnInit {
 
     this.currentResultPageIndex.set(pageIndex);
     this.setRouteParams({ page: currentPage });
-    this.searchBikes(
+    this.bikeSearchService.searchBikes(
       this.lastSearchedText(),
       this.lastSearchedColor(),
       currentPage,

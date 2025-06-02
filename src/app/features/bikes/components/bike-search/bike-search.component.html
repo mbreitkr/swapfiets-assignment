@@ -8,7 +8,7 @@
     </p>
   </header>
   <app-bike-search-input
-    [isLoading]="isSearchResultsLoading()"
+    [isLoading]="bikeSearchService.isSearchResultsLoading()"
     [lastSearchedCity]="lastSearchedText()"
     [lastSearchedColor]="lastSearchedColor()"
     (searchSubmit)="handleSearchSubmit($event)"
@@ -16,13 +16,13 @@
 </section>
 <section class="bike-search-results">
   <app-bike-search-results
-    [bikeSearchResults]="bikeSearchResults()"
-    [isLoading]="isSearchResultsLoading()"
-    [isError]="isSearchResultsError()"
-    [isSearchResultsEmpty]="isSearchResultsEmpty()"
-    [totalResults]="searchResultCount()"
+    [bikeSearchResults]="bikeSearchService.bikeSearchResults()"
+    [isLoading]="bikeSearchService.isSearchResultsLoading()"
+    [isError]="bikeSearchService.isSearchResultsError()"
+    [isSearchResultsEmpty]="bikeSearchService.isSearchResultsEmpty()"
+    [totalResults]="bikeSearchService.searchResultCount()"
+    [pageSize]="bikeSearchService.searchResultPageSize()"
     [currentPageIndex]="currentResultPageIndex()"
-    [pageSize]="searchResultPageSize()"
     (pageChange)="handlePageChange($event)"
   />
 </section>
