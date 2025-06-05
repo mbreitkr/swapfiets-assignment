@@ -1,3 +1,4 @@
+// TODO: Add interfaces for raw data from the API
 export interface BikeSummary {
   id: number;
   manufacturer_name: string;

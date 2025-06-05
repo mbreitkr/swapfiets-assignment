@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { BikeSearchResultCardComponent } from "./bike-search-result-card.component";
-import { bikeSummariesMock } from "../../testing/mocks/bike-search-results.mock";
+import { mockBikeSummaries_amsterdam_all_p1 } from "../../testing/mocks/bike-search-results.mock";
 import { By } from "@angular/platform-browser";
 import { DebugElement } from "@angular/core";
 
@@ -21,7 +21,7 @@ describe("BikeSearchResultCardComponent", () => {
 
   it("should create", async () => {
     // SETUP
-    const bikeSummary = bikeSummariesMock[0];
+    const bikeSummary = mockBikeSummaries_amsterdam_all_p1[0];
 
     // EXECUTION
     fixture.componentRef.setInput("bikeSearchResult", bikeSummary);
@@ -34,7 +34,7 @@ describe("BikeSearchResultCardComponent", () => {
 
   it("should display details of the correct inputted bike search result", async () => {
     // SETUP
-    const bikeSummary = bikeSummariesMock[0];
+    const bikeSummary = mockBikeSummaries_amsterdam_all_p1[0];
     const title = "2022 Gazelle Paris C7+ Hmb";
     const status = "Stolen";
     const serial = "GZ61885614";
@@ -74,7 +74,7 @@ describe("BikeSearchResultCardComponent", () => {
 
   it("should use a fallback image if a thumb image isn't present", async () => {
     // SETUP
-    const bikeSummary = bikeSummariesMock[3]; // has null for thumb image
+    const bikeSummary = mockBikeSummaries_amsterdam_all_p1[3]; // has null for thumb image
     const imageUrl = "img/placeholder_300x300@2x.png";
 
     // EXECUTION
@@ -89,7 +89,7 @@ describe("BikeSearchResultCardComponent", () => {
 
   it("should call window.open with the correct details page path", async () => {
     // SETUP
-    const bikeSummary = bikeSummariesMock[0];
+    const bikeSummary = mockBikeSummaries_amsterdam_all_p1[0];
     const detailsPagePath = `/details/${bikeSummary.id}`;
     const windownOpenSpy = spyOn(window, "open");
 

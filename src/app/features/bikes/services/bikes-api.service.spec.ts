@@ -12,9 +12,9 @@ import {
   BIKE_SEARCH_RESULTS_PER_PAGE,
 } from "../../../core/constants/api.config";
 import { expectStaticBikeSearchParams } from "../testing/bike-api-test-helpers";
-import { bikeSummariesMock } from "../testing/mocks/bike-search-results.mock";
+import { mockBikeSummaries_amsterdam_all_p1 } from "../testing/mocks/bike-search-results.mock";
 import { bikeDetailsMock } from "../testing/mocks/bike-details.mock";
-import { bikeResultsCountMock } from "../testing/mocks/bike-results-count.mock";
+import { mockBikeResultsCount_amsterdam_all } from "../testing/mocks/bike-results-count.mock";
 import { bikeColorsMock } from "../testing/mocks/bike-colors.mock";
 
 describe("BikesApiService", () => {
@@ -69,7 +69,7 @@ describe("BikesApiService", () => {
       );
       expectStaticBikeSearchParams(request);
 
-      request.flush({ bikes: bikeSummariesMock });
+      request.flush({ bikes: mockBikeSummaries_amsterdam_all_p1 });
     });
 
     it("should set the color param on the request if color is not an empty string", () => {
@@ -97,7 +97,7 @@ describe("BikesApiService", () => {
       );
       expectStaticBikeSearchParams(request);
 
-      request.flush({ bikes: bikeSummariesMock });
+      request.flush({ bikes: mockBikeSummaries_amsterdam_all_p1 });
     });
 
     it("should produce a 500 error if the server responds with a 500 error", () => {
@@ -141,7 +141,7 @@ describe("BikesApiService", () => {
       // SETUP
       const city = "Amsterdam";
       const color = "";
-      const bikeResultsCount = bikeResultsCountMock.proximity;
+      const bikeResultsCount = mockBikeResultsCount_amsterdam_all.proximity;
 
       // EXECUTION
       bikeApiService
@@ -160,7 +160,7 @@ describe("BikesApiService", () => {
       expect(request.request.params.get("location")).toBe(city);
       expectStaticBikeSearchParams(request);
 
-      request.flush(bikeResultsCountMock); // EXECUTION
+      request.flush(mockBikeResultsCount_amsterdam_all); // EXECUTION
     });
 
     it("should set the color param on the request if color is not an empty string", () => {
@@ -186,7 +186,7 @@ describe("BikesApiService", () => {
       expect(request.request.params.get("colors")).toBe(color);
       expectStaticBikeSearchParams(request);
 
-      request.flush(bikeResultsCountMock); // EXECUTION
+      request.flush(mockBikeResultsCount_amsterdam_all); // EXECUTION
     });
 
     it("should produce a 500 error if the server responds with a 500 error", () => {

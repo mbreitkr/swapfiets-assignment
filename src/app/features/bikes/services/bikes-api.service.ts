@@ -36,7 +36,7 @@ export class BikesApiService {
     if (color !== "") searchParams = searchParams.set("colors", color);
 
     return this.http
-      .get<BikeSearchResponse>(`${BASE_URL}/search`, {
+      .get<BikeSearchResponse>(`${BASE_URL}/searc`, {
         params: searchParams,
       })
       .pipe(map((resp) => resp.bikes));

@@ -1,9 +1,10 @@
 import { DestroyRef, inject, Injectable, signal } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { forkJoin } from "rxjs";
+import { finalize, forkJoin } from "rxjs";
 import { BikeSummary } from "../interfaces/bike.model";
 import { BIKE_SEARCH_RESULTS_PER_PAGE } from "../../../core/constants/api.config";
 import { BikesApiService } from "./bikes-api.service";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -41,18 +42,25 @@ export class BikeSearchService {
       ),
       resultCount: this.bikesApiService.getBikesResultCountByCity(city, color),
     })
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
         next: ({ searchResults, resultCount }) => {
-          if (resultCount === 0) this.isEmpty.set(true);
-          this.searchResults.set(searchResults);
           this.resultCount.set(resultCount);
-          this.isLoading.set(false);
+          if (resultCount === 0) {
+            this.searchResults.set([]);
+            this.isEmpty.set(true);
+            return;
+          }
+          this.searchResults.set(searchResults);
         },
-        error: (err) => {
+        error: (err: HttpErrorResponse) => {
           this.isError.set(true);
           console.error(err);
-          this.isLoading.set(false);
         },
       });
   }
