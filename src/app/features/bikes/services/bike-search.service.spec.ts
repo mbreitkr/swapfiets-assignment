@@ -1,5 +1,5 @@
 import { TestBed } from "@angular/core/testing";
-import { of } from "rxjs";
+import { of, throwError } from "rxjs";
 
 import { BikeSearchService } from "./bike-search.service";
 import { BikesApiService } from "./bikes-api.service";
@@ -17,6 +17,8 @@ import {
   mockBikeResultsCount_nonexistentcitystring_all,
 } from "../testing/mocks/bike-results-count.mock";
 import { BikeSummary } from "../interfaces/bike.model";
+import { mockBikesApiError_search_get_404 } from "../testing/mocks/bike-api-errors.mock";
+import { HttpErrorResponse } from "@angular/common/http";
 
 describe("BikeSearchService", () => {
   let bikeSearchService: BikeSearchService;
@@ -224,5 +226,47 @@ describe("BikeSearchService", () => {
     expect(bikeSearchService.isSearchResultsLoading()).toBe(false);
     expect(bikeSearchService.isSearchResultsEmpty()).toBe(true);
     expect(bikeSearchService.isSearchResultsError()).toBe(false);
+  });
+
+  it("should handle API errors gracefully", () => {
+    // SETUP
+    const city = "Amsterdam";
+    const color = "";
+    const pageNumber = 1;
+    const resultsPerPage = BIKE_SEARCH_RESULTS_PER_PAGE;
+    const bikeResultsCount = mockBikeResultsCount_amsterdam_all.proximity;
+    const httpErrorResponsePayload = {
+      status: mockBikesApiError_search_get_404.status,
+      statusText: mockBikesApiError_search_get_404.statusText,
+      url: mockBikesApiError_search_get_404.url,
+      error: mockBikesApiError_search_get_404.error,
+    };
+
+    bikesApiServiceSpy.getBikesByCity.and.returnValue(
+      throwError(() => new HttpErrorResponse(httpErrorResponsePayload)),
+    );
+    bikesApiServiceSpy.getBikesResultCountByCity.and.returnValue(
+      of(bikeResultsCount),
+    );
+
+    // EXECUTION
+    bikeSearchService.searchBikes(city, color, pageNumber);
+
+    // ASSERTION
+    expect(bikesApiServiceSpy.getBikesByCity).toHaveBeenCalledWith(
+      city,
+      color,
+      pageNumber,
+      resultsPerPage,
+    );
+    expect(bikesApiServiceSpy.getBikesResultCountByCity).toHaveBeenCalledWith(
+      city,
+      color,
+    );
+    expect(bikeSearchService.bikeSearchResults()).toEqual([]);
+    expect(bikeSearchService.searchResultCount()).toBe(0);
+    expect(bikeSearchService.isSearchResultsLoading()).toBe(false);
+    expect(bikeSearchService.isSearchResultsError()).toBe(true);
+    expect(bikeSearchService.isSearchResultsEmpty()).toBe(false);
   });
 });

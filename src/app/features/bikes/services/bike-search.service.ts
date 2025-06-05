@@ -6,6 +6,8 @@ import { BIKE_SEARCH_RESULTS_PER_PAGE } from "../../../core/constants/api.config
 import { BikesApiService } from "./bikes-api.service";
 import { HttpErrorResponse } from "@angular/common/http";
 
+// TODO: Add custom error messages for the search service
+
 @Injectable({
   providedIn: "root",
 })
@@ -52,14 +54,17 @@ export class BikeSearchService {
         next: ({ searchResults, resultCount }) => {
           this.resultCount.set(resultCount);
           if (resultCount === 0) {
-            this.searchResults.set([]);
             this.isEmpty.set(true);
+            this.searchResults.set([]);
             return;
           }
           this.searchResults.set(searchResults);
         },
         error: (err: HttpErrorResponse) => {
           this.isError.set(true);
+          this.isEmpty.set(false);
+          this.searchResults.set([]);
+          this.resultCount.set(0);
           console.error(err);
         },
       });
